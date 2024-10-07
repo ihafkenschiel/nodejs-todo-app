@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Database connection
-connectDB();
+connectDB().catch((err) => console.error("Failed to connect to MongoDB:", err));
 
 // Middleware
 app.use(express.json());
