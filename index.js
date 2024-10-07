@@ -19,6 +19,8 @@ app.use((err, req, res, next) => {
 
 // Route to get to-do items
 app.get("/todos", async (req, res, next) => {
+  console.log("DEBUG: Received a request for all to-dos");
+
   try {
     const response = await axios.get(
       "https://jsonplaceholder.typicode.com/todos"
@@ -26,6 +28,24 @@ app.get("/todos", async (req, res, next) => {
     res.json(response.data);
   } catch (error) {
     next(error); // Passes the error to the error-handling middleware
+  }
+});
+
+// Add POST route to simulate creating a To-Do item
+app.post("/todos", async (req, res, next) => {
+  const { title, completed } = req.body;
+
+  // Input validation
+  if (!title) {
+    return res.status(400).json({ error: "Title is required" });
+  }
+
+  try {
+    const newTodo = { title, completed: completed || false };
+    // Normally, this would be saved in a DB
+    res.status(201).json(newTodo);
+  } catch (error) {
+    next(error);
   }
 });
 
