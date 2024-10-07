@@ -55,13 +55,45 @@ On success, you will receive a JSON response with the new to-do item:
 ```
 
 ## Project Structure
+
+To improve scalability and maintainability, the project is organized into a modular folder structure. Each folder has a specific role in the architecture:
+
 ```
 todo-app/
-├── node_modules/
-├── index.js         # Main application file
-├── package.json     # Project metadata and dependencies
-└── README.md        # Project documentation
+├── config/
+│   └── dbConfig.js          # Database configuration file (e.g., MongoDB or MySQL)
+├── controllers/
+│   └── todoController.js    # Handles business logic for to-do routes
+├── models/
+│   └── todoModel.js         # Database schema/model for to-do items
+├── routes/
+│   └── todoRoutes.js        # Defines API routes for to-do operations
+├── services/
+│   └── todoService.js       # Service layer for database interaction
+├── middleware/
+│   ├── authMiddleware.js    # Handles user authentication
+│   └── errorMiddleware.js   # Custom error-handling middleware
+├── utils/
+│   ├── logger.js            # Custom logging utility
+│   └── helperFunctions.js   # Utility functions
+├── tests/
+│   ├── controllers/         # Unit tests for controllers
+│   └── routes/              # Integration tests for routes
+├── .gitignore               # Ignored files and folders for version control
+├── index.js                 # Entry point for the application
+├── package.json             # Project metadata and dependencies
+└── README.md                # Project documentation
 ```
+
+### Explanation of Key Folders
+- **config/**: Holds configuration files such as `dbConfig.js` for database connections.
+- **controllers/**: Contains functions that handle business logic and communicate with the service layer.
+- **models/**: Defines data structures for entities like to-do items, used for database interaction.
+- **routes/**: Manages the API endpoint definitions and maps them to the corresponding controller functions.
+- **services/**: Acts as an intermediary between controllers and models, isolating database interaction.
+- **middleware/**: Holds middleware for request processing, including authentication and error handling.
+- **utils/**: Utility functions and tools that can be reused across different parts of the app.
+- **tests/**: Organized testing files for ensuring the reliability of the application.
 
 ## Debugging
 
