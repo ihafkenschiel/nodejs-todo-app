@@ -1,6 +1,6 @@
 # Todo App with Node.js and Express
 
-A simple to-do list application built with Node.js and Express. This project is designed as a learning exercise to explore core Node.js concepts like asynchronous programming, middleware, error handling, API interaction, and Docker containerization.
+A simple to-do list application built with Node.js and Express. This project is designed as a learning exercise to explore core Node.js concepts like asynchronous programming, middleware, error handling, API interaction, Docker containerization, and Kubernetes orchestration.
 
 ## Features
 - **Express Server**: Basic RESTful API with routes to manage to-do items.
@@ -9,6 +9,7 @@ A simple to-do list application built with Node.js and Express. This project is 
 - **Error Handling**: Robust handling for API errors and validation.
 - **Database**: Integrated with MongoDB using Mongoose for data persistence.
 - **Dockerized Setup**: Containerized application for easy deployment and environment setup.
+- **Kubernetes**: Orchestrate the application and MongoDB services using Kubernetes.
 
 ## Getting Started
 
@@ -16,7 +17,8 @@ A simple to-do list application built with Node.js and Express. This project is 
 - [Node.js](https://nodejs.org/) (v12 or higher)
 - [npm](https://www.npmjs.com/) (Node Package Manager)
 - [Docker](https://www.docker.com/get-started)
-- [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) (optional, if not using Docker)
+- [Kubernetes CLI](https://kubernetes.io/docs/tasks/tools/) (`kubectl`)
+- [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) (optional, if not using Docker or Kubernetes)
 
 ### Installation
 
@@ -112,19 +114,59 @@ todo-app/
 ├── .gitignore               # Ignored files and folders for version control
 ├── Dockerfile               # Docker image definition for the Node.js app
 ├── docker-compose.yml       # Docker Compose file to manage services
+├── k8s/                     # Kubernetes configuration files
 ├── index.js                 # Entry point for the application
 ├── package.json             # Project metadata and dependencies
 └── README.md                # Project documentation
 ```
 
-### Explanation of Key Files
-- **config/dbConfig.js**: Connects to MongoDB using Mongoose.
-- **controllers/todoController.js**: Contains functions to handle requests by interacting with the service layer.
-- **models/todoModel.js**: Defines the schema for to-do items and represents the MongoDB model.
-- **routes/todoRoutes.js**: Maps endpoint URLs to controller functions.
-- **services/todoService.js**: Handles data logic and interacts directly with the model.
-- **Dockerfile**: Specifies the Docker image configuration for the application.
-- **docker-compose.yml**: Manages the application and MongoDB services.
+## Kubernetes Deployment
+
+### Prerequisites
+- [Docker](https://www.docker.com/)
+- [Kubernetes CLI](https://kubernetes.io/docs/tasks/tools/) (`kubectl`)
+- Access to a Kubernetes cluster (Minikube, Docker Desktop, GKE, etc.)
+
+### Building and Pushing the Docker Image
+1. **Build the Docker image**:
+   ```bash
+   docker build -t your-username/todo-app:latest .
+   ```
+
+2. **Push the Docker image**:
+   ```bash
+   docker push your-username/todo-app:latest
+   ```
+
+### Deploying with Kubernetes
+1. Apply the MongoDB deployment:
+   ```bash
+   kubectl apply -f k8s/mongo-deployment.yml
+   ```
+
+2. Apply the Node.js application deployment:
+   ```bash
+   kubectl apply -f k8s/app-deployment.yml
+   ```
+
+3. Verify that everything is running:
+   ```bash
+   kubectl get deployments
+   kubectl get pods
+   kubectl get services
+   ```
+
+4. Access the application:
+   - If using **port-forwarding**:
+     ```bash
+     kubectl port-forward service/todo-app-service 3000:3000
+     ```
+     Access at: `http://localhost:3000`
+
+   - If **EXTERNAL-IP** is assigned, use:
+     ```bash
+     http://<external-ip>:3000
+     ```
 
 ## Debugging
 
@@ -159,6 +201,7 @@ To debug in Visual Studio Code:
 - [MongoDB](https://www.mongodb.com/) - NoSQL database
 - [Mongoose](https://mongoosejs.com/) - MongoDB object modeling for Node.js
 - [Docker](https://www.docker.com/) - Containerization platform
+- [Kubernetes](https://kubernetes.io/) - Orchestration for containerized applications
 
 ## Contributing
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
