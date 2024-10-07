@@ -1,6 +1,6 @@
 # Todo App with Node.js and Express
 
-A simple to-do list application built with Node.js and Express. This project is designed as a learning exercise to explore core Node.js concepts like asynchronous programming, middleware, error handling, and API interaction.
+A simple to-do list application built with Node.js and Express. This project is designed as a learning exercise to explore core Node.js concepts like asynchronous programming, middleware, error handling, API interaction, and Docker containerization.
 
 ## Features
 - **Express Server**: Basic RESTful API with routes to manage to-do items.
@@ -8,15 +8,19 @@ A simple to-do list application built with Node.js and Express. This project is 
 - **Async API Calls**: Fetches sample to-do items from a mock API.
 - **Error Handling**: Robust handling for API errors and validation.
 - **Database**: Integrated with MongoDB using Mongoose for data persistence.
+- **Dockerized Setup**: Containerized application for easy deployment and environment setup.
 
 ## Getting Started
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v12 or higher)
 - [npm](https://www.npmjs.com/) (Node Package Manager)
-- [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) or a locally installed MongoDB instance
+- [Docker](https://www.docker.com/get-started)
+- [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) (optional, if not using Docker)
 
 ### Installation
+
+#### 1. Local Setup
 
 1. **Clone the repository**:
    ```bash
@@ -30,7 +34,7 @@ A simple to-do list application built with Node.js and Express. This project is 
    ```
 
 3. **Set up MongoDB**:
-   - Sign up for a [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) and create a new project.
+   - If you’re not using Docker, sign up for a [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas) and create a new project.
    - Create a **Cluster** and a **Database**.
    - Get the **MongoDB URI** from the MongoDB Atlas dashboard and replace `<username>`, `<password>`, and `<cluster>` in the URI with your own credentials.
 
@@ -46,6 +50,35 @@ A simple to-do list application built with Node.js and Express. This project is 
    node index.js
    ```
    The server will start at `http://localhost:3000`.
+
+#### 2. Docker Setup
+
+1. **Create a .env file**:
+   - In the root directory, create a `.env` file with the following contents:
+     ```plaintext
+     MONGO_URI=mongodb://mongo:27017/todo-app
+     PORT=3000
+     ```
+
+2. **Build and Run with Docker Compose**:
+   - Build and start the containers (the `--build` flag is needed the first time or whenever Dockerfile changes):
+     ```bash
+     docker-compose up --build
+     ```
+
+   - To stop the containers, press `Ctrl + C` in the terminal, or in a separate terminal window, run:
+     ```bash
+     docker-compose down
+     ```
+
+3. **Run in Detached Mode**:
+   - To run the containers in the background, add the `-d` flag:
+     ```bash
+     docker-compose up -d
+     ```
+
+4. **Access the Application**:
+   - Once the containers are up, the application should be accessible at `http://localhost:3000`.
 
 ### Usage
 - **GET /api/todos**: Fetches a list of to-do items from the database.
@@ -77,6 +110,8 @@ todo-app/
 │   ├── controllers/         # Unit tests for controllers
 │   └── routes/              # Integration tests for routes
 ├── .gitignore               # Ignored files and folders for version control
+├── Dockerfile               # Docker image definition for the Node.js app
+├── docker-compose.yml       # Docker Compose file to manage services
 ├── index.js                 # Entry point for the application
 ├── package.json             # Project metadata and dependencies
 └── README.md                # Project documentation
@@ -88,6 +123,8 @@ todo-app/
 - **models/todoModel.js**: Defines the schema for to-do items and represents the MongoDB model.
 - **routes/todoRoutes.js**: Maps endpoint URLs to controller functions.
 - **services/todoService.js**: Handles data logic and interacts directly with the model.
+- **Dockerfile**: Specifies the Docker image configuration for the application.
+- **docker-compose.yml**: Manages the application and MongoDB services.
 
 ## Debugging
 
@@ -121,6 +158,7 @@ To debug in Visual Studio Code:
 - [Express](https://expressjs.com/) - Web framework for Node.js
 - [MongoDB](https://www.mongodb.com/) - NoSQL database
 - [Mongoose](https://mongoosejs.com/) - MongoDB object modeling for Node.js
+- [Docker](https://www.docker.com/) - Containerization platform
 
 ## Contributing
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
